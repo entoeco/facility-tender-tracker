@@ -50,6 +50,9 @@ FACILITY_KEYWORDS = {
         "fluorescence microscopy", "live cell imaging", "microscopy services",
         "super-resolution microscopy",
     ],
+    "AI and Data Science": [
+    "artificial intelligence", "AI", "data science", "data collection", "data analysis"
+    ],
     "MiSeq / Sequencing": [
         "mi-seq", "miseq", "next generation sequencing", "ngs sequencing",
         "dna sequencing", "genome sequencing", "illumina sequencing",
