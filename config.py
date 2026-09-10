@@ -6,6 +6,9 @@ FACILITY_KEYWORDS = {
     "MRI (3 Tesla)": [
         "mri", "magnetic resonance imaging", "3 tesla", "3t scanner", "3t mri",
     ],
+        "Tech Support": [
+        "technical support", "lab work", "laboratory", "media prep", "autoclave"
+    ],
     "X-ray Crystallography": [
         "x-ray crystallography", "xray crystallography", "crystallography",
         "x-ray diffraction", "xrd", "protein crystallography",
