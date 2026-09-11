@@ -8,8 +8,8 @@ FACILITY_KEYWORDS = {
         "3-tesla", "mri scanner", "mri scanning", "brain imaging", "neuroimaging",
         "preclinical mri", "small animal mri",
     ],
-        "Tech Support": [
-        "technical support", "lab work", "laboratory", "media prep", "autoclave"
+    "Tech Support": [
+        "technical support", "lab work", "laboratory", "media prep", "autoclave",
     ],
     "X-ray Crystallography": [
         "x-ray crystallography", "xray crystallography", "crystallography",
@@ -78,7 +78,7 @@ FACILITY_KEYWORDS = {
         "high content screening", "multiphoton microscopy", "image analysis services",
     ],
     "AI and Data Science": [
-    "artificial intelligence", "AI", "data science", "data collection", "data analysis"
+        "artificial intelligence", "AI", "data science", "data collection", "data analysis",
     ],
     "MiSeq / Sequencing": [
         "mi-seq", "miseq", "next generation sequencing", "ngs sequencing",
