@@ -18,14 +18,24 @@ FTS_SEARCH_URL = "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePack
 
 HEADERS = {"Accept": "application/json", "User-Agent": "sussex-facility-tender-tracker/1.0"}
 
-MAX_PAGES = 20          # safety cap per source per run
+MAX_PAGES = 20          # safety cap per source per run (also bounded by time budget)
 REQUEST_DELAY_SECONDS = 0.4
-REQUEST_TIMEOUT = 15
+REQUEST_TIMEOUT = 45    # a single 100-record page from these APIs routinely takes
+                         # 15-20s to respond even when working correctly - this is
+                         # normal upstream slowness, not a failure to retry on
 MAX_RETRIES = 2
-RETRY_BACKOFF_SECONDS = 2
-SOURCE_TIME_BUDGET_SECONDS = 25  # both source APIs are prone to going flaky for
-                                  # minutes at a time; cap wall-clock time per
-                                  # source so a manual refresh never hangs the UI
+RETRY_BACKOFF_SECONDS = 3
+SOURCE_TIME_BUDGET_SECONDS = 200  # cap wall-clock time per source so a manual
+                                   # refresh can't hang forever if a source is
+                                   # genuinely erroring. This is generous (not
+                                   # snappy) on purpose: neither API supports
+                                   # server-side keyword search, so getting a
+                                   # trustworthy list means actually paginating
+                                   # through the window rather than sampling the
+                                   # first page or two and calling it done. A
+                                   # 7-day (weekly-refresh) window normally
+                                   # finishes well under this; a 60-day window
+                                   # may still hit MAX_PAGES first.
 
 
 def _iso(dt: datetime) -> str:

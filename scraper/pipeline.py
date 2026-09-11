@@ -23,8 +23,10 @@ def run_pipeline(days_back: int = 21, min_score: int = DEFAULT_MIN_SCORE) -> dic
     summary = {"errors": []}
 
     cf_records: list[dict] = []
+    cf_raw_count = 0
     try:
         cf_releases = fetch_contracts_finder_releases(days_back=days_back)
+        cf_raw_count = len(cf_releases)
         cf_records = [
             r for rel in cf_releases if is_open_tender_release(rel)
             for r in [normalize_contracts_finder(rel)] if r
@@ -33,8 +35,10 @@ def run_pipeline(days_back: int = 21, min_score: int = DEFAULT_MIN_SCORE) -> dic
         summary["errors"].append(f"Contracts Finder: {exc}")
 
     fts_records: list[dict] = []
+    fts_raw_count = 0
     try:
         fts_releases = fetch_find_a_tender_releases(days_back=days_back)
+        fts_raw_count = len(fts_releases)
         fts_records = [
             r for rel in fts_releases if is_open_tender_release(rel)
             for r in [normalize_find_a_tender(rel)] if r
@@ -51,6 +55,12 @@ def run_pipeline(days_back: int = 21, min_score: int = DEFAULT_MIN_SCORE) -> dic
 
     summary.update(
         {
+            # raw_* = total notices pulled from the API before any filtering; if
+            # these look low for the chosen lookback window, the source's own
+            # pagination is probably being slow (see SOURCE_TIME_BUDGET_SECONDS
+            # in sources.py) rather than there being nothing to find.
+            "raw_cf": cf_raw_count,
+            "raw_fts": fts_raw_count,
             "fetched_cf": len(cf_records),
             "fetched_fts": len(fts_records),
             "matched": len(matched),

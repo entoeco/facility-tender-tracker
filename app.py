@@ -51,18 +51,30 @@ st.caption(
 
 with st.sidebar:
     st.header("Refresh")
-    days_back = st.slider("Look back (days)", min_value=7, max_value=60, value=21)
+    days_back = st.slider(
+        "Look back (days)", min_value=7, max_value=60, value=7,
+        help=(
+            "Contracts Finder and Find a Tender have no keyword search of their own, "
+            "so every notice in this window has to be pulled and scanned locally. "
+            "7 days (matching a weekly refresh) usually finishes in a couple of minutes; "
+            "60 days can take 10+ minutes and may not reach every notice in the window."
+        ),
+    )
     if st.button("Refresh now", type="primary"):
-        with st.spinner("Fetching from Contracts Finder and Find a Tender..."):
+        with st.spinner(
+            "Fetching from Contracts Finder and Find a Tender... "
+            "these APIs are slow (a longer lookback can take a couple of minutes)."
+        ):
             result = run_pipeline(days_back=days_back)
         get_conn.clear()
         if result.get("errors"):
             for err in result["errors"]:
                 st.error(err)
         st.success(
-            f"Fetched {result.get('fetched_cf', 0)} (Contracts Finder) + "
-            f"{result.get('fetched_fts', 0)} (Find a Tender) open notices. "
-            f"{result.get('matched', 0)} matched keywords — "
+            f"Scanned {result.get('raw_cf', 0)} (Contracts Finder) + "
+            f"{result.get('raw_fts', 0)} (Find a Tender) notices in the window, "
+            f"of which {result.get('fetched_cf', 0)} + {result.get('fetched_fts', 0)} "
+            f"were open tenders. {result.get('matched', 0)} matched keywords — "
             f"{result.get('new', 0)} new, {result.get('updated', 0)} updated."
         )
 
